@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ChatGPT</title>
+</head>
+<body>
+  <h1>ChatGPT</h1>
+  <input type="text" id="inputText" placeholder="Escribe tu pregunta">
+  <button onclick="enviarPregunta()">Enviar</button>
+  <p id="respuesta"></p>
+
+  <script>
+    function enviarPregunta() {
+      var pregunta = document.getElementById("inputText").value;
+      var respuestaParrafo = document.getElementById("respuesta");
+      respuestaParrafo.innerHTML = "Cargando...";
+
+      // Realizar petición a la API de ChatGPT
+      fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          pregunta: pregunta
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        var respuesta = data.respuesta;
+        respuestaParrafo.innerHTML = respuesta;
+      })
+      .catch(error => {
+        console.log("Error:", error);
+        respuestaParrafo.innerHTML = "Ha ocurrido un error.";
+      });
+    }
+
+  </script>
+</body>
+</html>
